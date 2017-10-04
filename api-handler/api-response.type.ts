@@ -6,7 +6,6 @@ export interface BitbankApiResponse<T> {
   data: T;
 }
 
-
 /**
  * GET: /{pair}/ticker
  *
@@ -44,7 +43,6 @@ export interface BitbankApiDepth {
  */
 type BitbankApiDepthData = [ string, string ];
 
-
 /**
  * GET: /{pair}/transactions
  *
@@ -67,4 +65,22 @@ interface BitbankApiTransactionData {
   price: string;
   amount: string;
   executed_at: number;
+}
+
+/**
+ * GET: /{pair}/candlestick
+ *
+ * type  -
+ * ohlcv - [始値, 高値, 安値, 終値, 出来高, UnixTime]
+ */
+export interface BitbankApiCandlestick {
+  candlestick: BitbankApiCandlestickData[];
+}
+
+/**
+ * Each transaction data.
+ */
+interface BitbankApiCandlestickData {
+  type: string;
+  ohlcv: [string, string, string, string, string, number][];
 }
