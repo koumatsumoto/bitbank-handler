@@ -1,4 +1,4 @@
-import { BitbankApiHandler } from './api-hander';
+import { BitbankApiHandler } from './api-handler';
 import * as expect from 'expect';
 import moment = require('moment');
 
