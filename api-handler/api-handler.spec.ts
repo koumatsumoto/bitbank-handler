@@ -107,7 +107,7 @@ describe('BitbankApiHandler', () => {
         api.getTransactions(pair, moment().subtract(2, 'day').format('YYYYMMDD'))
           .subscribe(
             (data) => {
-              expect(Array.isArray(data.transactions)).toBeTruthy();
+              expect(Array.isArray(data.transactions)).toBe(true);
             },
             () => {},
             () => done(),
