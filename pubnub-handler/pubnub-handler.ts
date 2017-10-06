@@ -1,21 +1,23 @@
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
-import {
-  BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTransactions,
-} from '../api-handler/api-response.type';
+import { BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTransactions, } from '../api-handler/api-response.type';
 import { PubNub, PubNubMessageData } from './pubnub.type';
 const PubNub = require('pubnub');
 
+// @see: https://docs.bitbank.cc/
 const bitbankPubNubSubscribeKey = 'sub-c-e12e9174-dd60-11e6-806b-02ee2ddab7fe';
 
 
+/**
+ * Class to handle pubnub of bitbank.cc.
+ */
 export class BitbankPubnubHandler {
   private pubnub: PubNub = new PubNub({ subscribeKey: bitbankPubNubSubscribeKey });
 
   /**
    * Subjects of tickers for each pubnub channel, depths and etc.
    *
-   * key is pubnub channel name.
+   * keys are the channel names of bitbank pubnub.
    */
   private subjectMap = new Map<string, ReplaySubject<any>>();
 
@@ -24,7 +26,7 @@ export class BitbankPubnubHandler {
   }
 
   /**
-   * Get Ticker data stream via pubnub.
+   * Get observable of ticker data published by pubnub.
    */
   getTicker$(pair: string): Observable<BitbankApiTicker> {
     const channelName = 'ticker' + '_' + pair;
@@ -32,7 +34,7 @@ export class BitbankPubnubHandler {
   }
 
   /**
-   * Get depth data stream via pubnub..
+   * Get observable of ticker data published by pubnub.
    */
   getDepth$(pair: string): Observable<BitbankApiDepth> {
     const channelName = 'depth' + '_' + pair;
@@ -40,7 +42,7 @@ export class BitbankPubnubHandler {
   }
 
   /**
-   * Get transactions data stream via pubnub..
+   * Get observable of transactions data published by pubnub.
    */
   getTransactions$(pair: string): Observable<BitbankApiTransactions> {
     const channelName = 'transactions' + '_' + pair;
@@ -48,7 +50,7 @@ export class BitbankPubnubHandler {
   }
 
   /**
-   * Get transactions data stream via pubnub..
+   * Get observable of candlestick data published by pubnub.
    */
   getCandlestick$(pair: string): Observable<BitbankApiCandlestick> {
     const channelName = 'candlestick' + '_' + pair;
@@ -56,7 +58,7 @@ export class BitbankPubnubHandler {
   }
 
   /**
-   * Get observable of target channel.
+   * Get observable of the target channel.
    *
    * If pubnub have not subscribed to it yet, start to.
    */
