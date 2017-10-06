@@ -10,7 +10,6 @@ describe('BitbankPubnubHandler', () => {
     pubnubHandler = new BitbankPubnubHandler();
   });
 
-
   describe('#getTicker$', () => {
     it('should receive ticker data via pubnub properly', (done) => {
       pubnubHandler.getTicker$(pair).pipe(first())

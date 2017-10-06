@@ -2,13 +2,10 @@ import { BitbankApiHandler } from './api-handler';
 import * as expect from 'expect';
 import * as moment from 'moment';
 
-
+let api: BitbankApiHandler;
+const pair = 'btc_jpy';
 describe('BitbankApiHandler', () => {
-  const pair = 'btc_jpy';
-
-
   describe('Public Api', () => {
-    let api: BitbankApiHandler;
     before(() => {
       api = new BitbankApiHandler();
     });
