@@ -1,6 +1,6 @@
 import { BitbankApiHandler } from './api-handler';
 import * as expect from 'expect';
-import moment = require('moment');
+import * as moment from 'moment';
 
 
 describe('BitbankApiHandler', () => {
