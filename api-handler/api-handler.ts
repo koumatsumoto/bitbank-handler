@@ -5,6 +5,10 @@ import { BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTra
 const publicApiBaseUrl = 'https://public.bitbank.cc/';
 const privateApiBaseUrl = 'https://api.bitbank.cc/v1/';
 
+
+/**
+ * Class to handle bitbank api.
+ */
 export class BitbankApiHandler {
   private http = new Http();
 
@@ -42,12 +46,11 @@ export class BitbankApiHandler {
   }
 
   /**
-   * Base method to request public api-handler.
+   * For get request to public api.
    */
-  private publicRequest<T>(path: string, params: {[key: string]: any} = {}) {
+  private publicRequest<T>(path: string) {
     const url = publicApiBaseUrl + path;
-    const options = { params: { ...params } };
-    return this.http.get<T>(url, options);
+    return this.http.get<T>(url);
   }
 }
 
