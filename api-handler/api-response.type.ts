@@ -108,3 +108,29 @@ interface BitbankApiCandlestickData {
 }
 
 export type BitbankApiCandlestickType = '1min' | '5min' | '15min' | '30min' | '1hour' | '4hour' | '8hour' | '12hour' | '1day' | '1week';
+
+/**
+ * GET: /user/assets
+ *
+ * @see: https://docs.bitbank.cc/#!/Assets/user_asset
+ */
+export interface BitbankApiUserAssets {
+  assets: BitbankUserAssetData[];
+}
+
+/**
+ * asset - アセット名
+ * amount_precision - 小数点の表示精度
+ * onhand_amount - 保有量
+ * locked_amount - ロックされている量
+ * free_amount - 利用可能な量
+ * withdrawal_fee - 引き出し手数料
+ */
+interface BitbankUserAssetData {
+  asset: string;
+  amount_precision: number;
+  onhand_amount: string;
+  locked_amount: string;
+  free_amount: string;
+  withdrawal_fee: string;
+}
