@@ -1,6 +1,13 @@
-import { Http } from '../http/http';
 import { Observable } from 'rxjs/Observable';
-import { BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTransactions } from './api-response.type';
+import { Http } from '../http/http';
+import {
+  BitbankApiCandlestick,
+  BitbankApiCandlestickType,
+  BitbankApiDepth,
+  BitbankApiTicker,
+  BitbankApiTransactions,
+} from './api-response.type';
+
 
 const publicApiBaseUrl = 'https://public.bitbank.cc/';
 const privateApiBaseUrl = 'https://api.bitbank.cc/v1/';
@@ -41,7 +48,7 @@ export class BitbankApiHandler {
   /**
    * GET: /{pair}/candlestick
    */
-  getCandlestick(pair: string, type: CandlestickType, yyyymmdd: string): Observable<BitbankApiCandlestick> {
+  getCandlestick(pair: string, type: BitbankApiCandlestickType, yyyymmdd: string): Observable<BitbankApiCandlestick> {
     return this.publicRequest(`${pair}/candlestick/${type}/${yyyymmdd}`);
   }
 
@@ -61,5 +68,3 @@ interface BitbankApiHandlerOptions {
   apiKey?: string;
   apiSecret?: string;
 }
-
-type CandlestickType = '1min' | '5min' | '15min' | '30min' | '1hour' | '4hour' | '8hour' | '12hour' | '1day' | '1week';

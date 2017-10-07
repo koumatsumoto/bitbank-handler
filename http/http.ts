@@ -2,15 +2,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { map, tap } from 'rxjs/operators';
-import { BitbankApiResponse } from '../api-handler/api-response.type';
+import { BitbankApiErrorData, BitbankApiResponse } from '../api-handler/api-response.type';
 
-
-/**
- * Override type of data. <any> to <T>.
- */
-interface AxiosHttpResponse<T> extends AxiosResponse {
-  data: T;
-}
 
 /**
  * Http handler for bitbank.cc API.
@@ -30,9 +23,21 @@ export class Http {
 
 /**
  * Internal function of Http.
+ *
+ * all api result whose success is 0 has BitbankApiErrorData interface.
  */
 function throwErrorIfSuccessIs0(data: BitbankApiResponse<any>): void {
-  if (!data.success) {
-    throw new Error('bitbank.cc api success is not 1');
+  if (data.success === 0) {
+    const errorResult = <BitbankApiErrorData>data.data;
+    throw new Error(`bitbank.cc api error, ${errorResult.code}`);
   }
+}
+
+/**
+ * Override axios response's interface to enable generics.
+ *
+ * <any> to <T>.
+ */
+interface AxiosHttpResponse<T> extends AxiosResponse {
+  data: T;
 }
