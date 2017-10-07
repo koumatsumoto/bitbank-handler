@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { HmacSHA256 } from 'crypto-js';
+import { createHmac } from 'crypto';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '../http/http';
 import {
@@ -12,7 +12,7 @@ import {
 
 
 const publicApiBaseUrl = 'https://public.bitbank.cc/';
-const privateApiBaseUrl = 'https://api.bitbank.cc/v1/';
+const privateApiBaseUrl = 'https://api.bitbank.cc';
 
 
 /**
@@ -20,10 +20,15 @@ const privateApiBaseUrl = 'https://api.bitbank.cc/v1/';
  */
 export class BitbankApiHandler {
   private http = new Http();
+  private apiKey = '';
+  private apiSecret = '';
 
   constructor(
-    private options: BitbankApiHandlerOptions = {},
-  ) {}
+    options: BitbankApiHandlerOptions = {},
+  ) {
+    this.apiKey = options.apiKey || '';
+    this.apiSecret = options.apiSecret || '';
+  }
 
   /**
    * GET: /{pair}/ticker
@@ -58,7 +63,7 @@ export class BitbankApiHandler {
    * GET: /user/assets
    */
   getUserAssets(): Observable<BitbankApiUserAssets> {
-    return this.privateGetRequest<Observable<BitbankApiUserAssets>>('/user/assets');
+    return this.privateGetRequest<BitbankApiUserAssets>('/v1/user/assets');
   }
 
   /**
@@ -79,7 +84,7 @@ export class BitbankApiHandler {
     this.checkApiKeyAndSecretBeforeRequest();
 
     const url = privateApiBaseUrl + path;
-    const queryString = url + getJSONorEmptyString(query);
+    const queryString = path + getJSONorEmptyString(query);
     return this.http.get(url, {
       headers: this.makeHeaderToPrivateRequest(queryString),
     });
@@ -96,9 +101,9 @@ export class BitbankApiHandler {
     const message = nonce + queryString;
     return {
       'Content-Type': 'application/json',
-      'ACCESS-KEY': this.options.apiKey,
+      'ACCESS-KEY': this.apiKey,
       'ACCESS-NONCE': nonce,
-      'ACCESS-SIGNATURE': HmacSHA256(this.options.apiSecret, message),
+      'ACCESS-SIGNATURE': createHmac('sha256', this.apiSecret).update(new Buffer(message)).digest('hex').toString(),
     };
   }
 
@@ -108,8 +113,8 @@ export class BitbankApiHandler {
    * @throws {Error}
    */
   private checkApiKeyAndSecretBeforeRequest(): void {
-    if (!this.options.apiKey || !this.options.apiSecret) {
-      throw new Error('api-handler-key and api-handler-secret are required to request private api-handler.');
+    if (!this.apiKey || !this.apiSecret) {
+      throw new Error('both api-key and api-secret are required to private api request.');
     }
   }
 }
@@ -125,10 +130,16 @@ interface BitbankApiHandlerOptions {
 /**
  * JSON.stringify wrapped with try-catch.
  *
+ * If data does not pass, return empty string.
+ *
  * @param data - target contents to json-stringify.
  * @returns {string} - json, or empty-string if invalid data passed.
  */
 function getJSONorEmptyString(data?: any): string {
+  if (!data) {
+    return '';
+  }
+
   let result = '';
   try {
     result = JSON.stringify(data);
