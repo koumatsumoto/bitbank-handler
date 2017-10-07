@@ -3,6 +3,7 @@ import { createHmac } from 'crypto';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '../http/http';
 import {
+  BibbankUserSpotOrderPost,
   BitbankApiCandlestick,
   BitbankApiCandlestickType,
   BitbankApiDepth,
@@ -66,6 +67,10 @@ export class BitbankApiHandler {
     return this.privateGetRequest<BitbankApiUserAssets>('/v1/user/assets');
   }
 
+  createOrder(options: BitbankApiOrderOptions): Observable<BibbankUserSpotOrderPost> {
+    return this.privatePostRequest<BibbankUserSpotOrderPost>('/v1/user/spot/order', options);
+  }
+
   /**
    * For get request to public api.
    */
@@ -75,7 +80,7 @@ export class BitbankApiHandler {
   }
 
   /**
-   * Use to credential request.
+   * Get request to private api.
    *
    * @throw - Error be thrown if credential data lacks.
    */
@@ -84,9 +89,25 @@ export class BitbankApiHandler {
     this.checkApiKeyAndSecretBeforeRequest();
 
     const url = privateApiBaseUrl + path;
-    const queryString = path + getJSONorEmptyString(query);
+    const queryString = query ? qs.stringify(query) : '';
     return this.http.get(url, {
-      headers: this.makeHeaderToPrivateRequest(queryString),
+      headers: this.makeHeaderToPrivateRequest(path + queryString),
+    });
+  }
+
+  /**
+   * Post request to private api.
+   *
+   * @throw - Error be thrown if credential data lacks.
+   */
+  private privatePostRequest<T>(path: string, body: {[key: string]: any}): Observable<T> {
+    // Error can be thrown here.
+    this.checkApiKeyAndSecretBeforeRequest();
+
+    const url = privateApiBaseUrl + path;
+    const json = getJSONorEmptyString(body);
+    return this.http.post(url, body, {
+      headers: this.makeHeaderToPrivateRequest(json),
     });
   }
 
@@ -125,6 +146,17 @@ export class BitbankApiHandler {
 interface BitbankApiHandlerOptions {
   apiKey?: string;
   apiSecret?: string;
+}
+
+/**
+ * Used to create order.
+ */
+export interface BitbankApiOrderOptions {
+  pair: string;
+  amount: number;
+  price: number;
+  side: 'buy' | 'sell';
+  type: 'limit' | 'market';
 }
 
 /**

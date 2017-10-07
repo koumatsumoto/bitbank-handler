@@ -19,6 +19,15 @@ export class Http {
         map(data => data.data),
       );
   }
+
+  post<T>(url: string, body: {[key: string]: any}, options?: AxiosRequestConfig): Observable<T> {
+    return fromPromise<AxiosHttpResponse<BitbankApiResponse<T>>>(<any>axios.post(url, body, options))
+      .pipe(
+        map(res => res.data),
+        tap(data => throwErrorIfSuccessIs0(data)),
+        map(data => data.data),
+      );
+  }
 }
 
 /**

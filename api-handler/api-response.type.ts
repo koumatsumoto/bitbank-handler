@@ -73,7 +73,7 @@ export interface BitbankApiTransactions {
  * Each transaction data.
  *
  * transaction_id - 取引ID
- * side           - "buy" または "sell"
+ * side           - buy または sell
  * price          - 価格
  * amount         - 数量
  * executed_at    - 約定日時（UnixTimeのミリ秒）
@@ -134,3 +134,39 @@ interface BitbankUserAssetData {
   free_amount: string;
   withdrawal_fee: string;
 }
+
+/**
+ * order_id 取引ID
+ * pair 通貨ペア。btc_jpy, xrp_jpy, ltc_btc, eth_btc, mona_jpy, mona_btc, bcc_jpy, bcc_btc
+ * side -buy または sell
+ * type -limit または market
+ * start_amount - 注文時の数量
+ * remaining_amount - 未約定の数量
+ * executed_amount - 約定済み数量
+ * price - 注文価格
+ * average_price - 平均約定価格
+ * ordered_at - 注文日時(UnixTimeのミリ秒)
+ * status - 注文ステータス
+ */
+export interface BibbankUserSpotOrderPost {
+  order_id: number;
+  pair: string;
+  side: 'buy' | 'sell';
+  type: 'limit' | 'market';
+  start_amount: string;
+  remaining_amount: string;
+  executed_amount: string;
+  price: string;
+  average_price: string;
+  ordered_at: number;
+  status: BitbankOrderStatus;
+}
+
+/**
+ * UNFILLED - 注文中
+ * PARTIALLY_FILLED - 注文中(一部約定)
+ * FULLY_FILLED - 約定済み
+ * CANCELED_UNFILLED - 取消済
+ * CANCELED_PARTIALLY_FILLED - 取消済(一部約定)
+ */
+type BitbankOrderStatus = 'UNFILLED' | 'PARTIALLY_FILLED' | 'FULLY_FILLED' | 'CANCELED_UNFILLED' | 'CANCELED_PARTIALLY_FILLED';
