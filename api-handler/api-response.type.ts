@@ -189,3 +189,18 @@ export interface BitbankApiWithdrawalData {
   label: string;
   address: string;
 }
+
+/**
+ * @see https://docs.bitbank.cc/#!/Withdraw/request_withdrawal
+ */
+export interface BitbankApiWithdrawalRequestResult {
+  uuid: string;
+  asset: string;
+  amount: number;
+  account_uuid: string;
+  fee: string;
+  status: string;
+  label: string;
+  txid: string;
+  address: string;
+}

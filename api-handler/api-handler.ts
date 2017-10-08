@@ -12,6 +12,7 @@ import {
   BitbankApiTicker,
   BitbankApiTransactions,
   BitbankApiWithdrawalResult,
+  BitbankApiWithdrawalRequestResult,
 } from './api-response.type';
 
 
@@ -120,6 +121,15 @@ export class BitbankApiHandler {
   }
 
   /**
+   * POST: /v1/user/request_withdrawal
+   *
+   * @see - https://docs.bitbank.cc/#!/Withdraw/request_withdrawal
+   */
+  createWithdrawalRequest(options: BitbankApiCreateWithdrawalRequestOptions): Observable<BitbankApiWithdrawalRequestResult> {
+    return this.privatePostRequest<BitbankApiWithdrawalRequestResult>('/v1/user/request_withdrawal', options);
+  }
+
+  /**
    * For get request to public api.
    */
   private publicRequest<T>(path: string): Observable<T> {
@@ -214,7 +224,7 @@ function getJSONorEmptyString(data?: any): string {
 /**
  * apiKey and apiSecret are required if user uses private-api.
  */
-interface BitbankApiHandlerOptions {
+export interface BitbankApiHandlerOptions {
   apiKey?: string;
   apiSecret?: string;
 }
@@ -233,10 +243,21 @@ export interface BitbankApiOrderOptions {
 /**
  * @see: https://docs.bitbank.cc/#!/Order/active_orders
  */
-interface BitbankApiActiveOrdersOptions {
+export interface BitbankApiActiveOrdersOptions {
   count?: number;
   from_id?: number;
   end_id?: number;
   since?: number;
   end?: number;
+}
+
+/**
+ * @see https://docs.bitbank.cc/#!/Withdraw/request_withdrawal
+ */
+export interface BitbankApiCreateWithdrawalRequestOptions {
+  asset: string;
+  uuid: string;
+  amount: string;
+  otp_token?: string;
+  sms_token?: string;
 }
