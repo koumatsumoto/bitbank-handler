@@ -114,8 +114,8 @@ export type BitbankApiCandlestickType = '1min' | '5min' | '15min' | '30min' | '1
  *
  * @see: https://docs.bitbank.cc/#!/Assets/user_asset
  */
-export interface BitbankApiUserAssets {
-  assets: BitbankUserAssetData[];
+export interface BitbankApiAssets {
+  assets: BitbankApiAsset[];
 }
 
 /**
@@ -126,7 +126,7 @@ export interface BitbankApiUserAssets {
  * free_amount - 利用可能な量
  * withdrawal_fee - 引き出し手数料
  */
-interface BitbankUserAssetData {
+interface BitbankApiAsset {
   asset: string;
   amount_precision: number;
   onhand_amount: string;
@@ -148,7 +148,7 @@ interface BitbankUserAssetData {
  * ordered_at - 注文日時(UnixTimeのミリ秒)
  * status - 注文ステータス
  */
-export interface BibbankUserSpotOrderPost {
+export interface BitbankApiOrder {
   order_id: number;
   pair: string;
   side: 'buy' | 'sell';

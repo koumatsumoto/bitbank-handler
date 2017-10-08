@@ -3,12 +3,12 @@ import { createHmac } from 'crypto';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '../http/http';
 import {
-  BibbankUserSpotOrderPost,
+  BitbankApiOrder,
   BitbankApiCandlestick,
   BitbankApiCandlestickType,
   BitbankApiDepth,
   BitbankApiTicker,
-  BitbankApiTransactions, BitbankApiUserAssets,
+  BitbankApiTransactions, BitbankApiAssets,
 } from './api-response.type';
 
 
@@ -63,12 +63,22 @@ export class BitbankApiHandler {
   /**
    * GET: /user/assets
    */
-  getUserAssets(): Observable<BitbankApiUserAssets> {
-    return this.privateGetRequest<BitbankApiUserAssets>('/v1/user/assets');
+  getAssets(): Observable<BitbankApiAssets> {
+    return this.privateGetRequest<BitbankApiAssets>('/v1/user/assets');
   }
 
-  createOrder(options: BitbankApiOrderOptions): Observable<BibbankUserSpotOrderPost> {
-    return this.privatePostRequest<BibbankUserSpotOrderPost>('/v1/user/spot/order', options);
+  /**
+   * POST: /user/spot/order
+   */
+  createOrder(options: BitbankApiOrderOptions): Observable<BitbankApiOrder> {
+    return this.privatePostRequest<BitbankApiOrder>('/v1/user/spot/order', options);
+  }
+
+  /**
+   * GET: /user/spot/order
+   */
+  getOrder(pair: string, order_id: string): Observable<BitbankApiOrder> {
+    return this.privateGetRequest<BitbankApiOrder>('/v1/user/spot/order', { pair, order_id });
   }
 
   /**
@@ -88,8 +98,8 @@ export class BitbankApiHandler {
     // Error can be thrown here.
     this.checkApiKeyAndSecretBeforeRequest();
 
-    const url = privateApiBaseUrl + path;
-    const queryString = query ? qs.stringify(query) : '';
+    const queryString = query ? `?${qs.stringify(query)}` : '';
+    const url = privateApiBaseUrl + path + queryString;
     return this.http.get(url, {
       headers: this.makeHeaderToPrivateRequest(path + queryString),
     });
