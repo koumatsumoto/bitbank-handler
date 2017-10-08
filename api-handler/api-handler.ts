@@ -100,9 +100,8 @@ export class BitbankApiHandler {
 
     const queryString = query ? `?${qs.stringify(query)}` : '';
     const url = privateApiBaseUrl + path + queryString;
-    return this.http.get(url, {
-      headers: this.makeHeaderToPrivateRequest(path + queryString),
-    });
+    const options = this.getOptionsToPrivateRequest(path + queryString);
+    return this.http.get(url, options);
   }
 
   /**
@@ -114,11 +113,10 @@ export class BitbankApiHandler {
     // Error can be thrown here.
     this.checkApiKeyAndSecretBeforeRequest();
 
-    const url = privateApiBaseUrl + path;
     const json = getJSONorEmptyString(body);
-    return this.http.post(url, body, {
-      headers: this.makeHeaderToPrivateRequest(json),
-    });
+    const url = privateApiBaseUrl + path;
+    const options = this.getOptionsToPrivateRequest(json);
+    return this.http.post(url, body, options);
   }
 
   /**
@@ -127,15 +125,16 @@ export class BitbankApiHandler {
    * @param {string} queryString
    * @returns {object}
    */
-  private makeHeaderToPrivateRequest(queryString: string) {
+  private getOptionsToPrivateRequest(queryString: string) {
     const nonce = new Date().getTime();
     const message = nonce + queryString;
-    return {
+    const headers = {
       'Content-Type': 'application/json',
       'ACCESS-KEY': this.apiKey,
       'ACCESS-NONCE': nonce,
       'ACCESS-SIGNATURE': createHmac('sha256', this.apiSecret).update(new Buffer(message)).digest('hex').toString(),
     };
+    return { headers };
   }
 
   /**
