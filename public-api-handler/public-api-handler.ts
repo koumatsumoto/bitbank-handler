@@ -9,34 +9,42 @@ import {
 } from '../api-response.type';
 
 
-const publicApiBaseUrl = 'https://public.bitbank.cc/';
+const publicApiBaseUrl = 'https://public.bitbank.cc';
 
 
 /**
  * Class to handle bitbank api.
  */
 export class BitbankPublicApiHandler {
-  private http = new Http();
+  /**
+   * Http can be dependency-injection.
+   * If you want to handle your http response, use your http classes.
+   *
+   * @param {object} http - http client which returns http result as Observable.
+   */
+  constructor(
+    private http = new Http(),
+  ) {}
 
   /**
    * GET: /{pair}/ticker
    */
   getTicker(pair: string): Observable<BitbankApiTicker> {
-    return this.publicRequest(`${pair}/ticker`);
+    return this.publicRequest(`/${pair}/ticker`);
   }
 
   /**
    * GET: /{pair}/depth
    */
   getDepth(pair: string): Observable<BitbankApiDepth> {
-    return this.publicRequest(`${pair}/depth`);
+    return this.publicRequest(`/${pair}/depth`);
   }
 
   /**
    * GET: /{pair}/transactions
    */
   getTransactions(pair: string, yyyymmdd?: string): Observable<BitbankApiTransactions> {
-    const url = yyyymmdd ? `${pair}/transactions/${yyyymmdd}` : `${pair}/transactions`;
+    const url = yyyymmdd ? `/${pair}/transactions/${yyyymmdd}` : `/${pair}/transactions`;
     return this.publicRequest(url);
   }
 
@@ -44,7 +52,7 @@ export class BitbankPublicApiHandler {
    * GET: /{pair}/candlestick
    */
   getCandlestick(pair: string, type: BitbankApiCandlestickType, yyyymmdd: string): Observable<BitbankApiCandlestick> {
-    return this.publicRequest(`${pair}/candlestick/${type}/${yyyymmdd}`);
+    return this.publicRequest(`/${pair}/candlestick/${type}/${yyyymmdd}`);
   }
 
   /**

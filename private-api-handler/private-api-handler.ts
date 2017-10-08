@@ -17,12 +17,19 @@ const privateApiBaseUrl = 'https://api.bitbank.cc';
  * Class to handle bitbank api.
  */
 export class BitbankPrivateApiHandler {
-  private http = new Http();
   private apiKey = '';
   private apiSecret = '';
 
+  /**
+   * Http can be dependency-injection.
+   * If you want to handle your http response, use your http classes.
+   *
+   * @param {object} options - credential information to use private api.
+   * @param {object} http - http client which returns http result as Observable.
+   */
   constructor(
     options: BitbankPrivateApiHandlerOptions = {},
+    private http = new Http(),
   ) {
     this.apiKey = options.apiKey || '';
     this.apiSecret = options.apiSecret || '';
