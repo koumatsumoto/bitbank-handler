@@ -1,6 +1,6 @@
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
-import { BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTransactions, } from '../api-handler/api-response.type';
+import { BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTransactions, } from '../api-response.type';
 import { PubNub, PubNubMessageData } from './pubnub.type';
 const PubNub = require('pubnub');
 

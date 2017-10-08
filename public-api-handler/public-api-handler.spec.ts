@@ -1,13 +1,13 @@
-import { BitbankApiHandler } from './api-handler';
+import { BitbankPublicApiHandler } from './public-api-handler';
 import * as expect from 'expect';
 import * as moment from 'moment';
 
-let api: BitbankApiHandler;
+let api: BitbankPublicApiHandler;
 const pair = 'btc_jpy';
 describe('BitbankApiHandler', () => {
   describe('Public Api', () => {
     before(() => {
-      api = new BitbankApiHandler();
+      api = new BitbankPublicApiHandler();
     });
 
     describe('#getTicker', () => {

@@ -3,72 +3,29 @@ import { createHmac } from 'crypto';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '../http/http';
 import {
-  BitbankApiAssets,
   BitbankApiOrder,
-  BitbankApiCandlestick,
-  BitbankApiCandlestickType,
-  BitbankApiDepth,
   BitbankApiMultiOrdersResult,
-  BitbankApiTicker,
-  BitbankApiTransactions,
   BitbankApiWithdrawalResult,
   BitbankApiWithdrawalRequestResult,
-} from './api-response.type';
+} from '../api-response.type';
 
 
-const publicApiBaseUrl = 'https://public.bitbank.cc/';
 const privateApiBaseUrl = 'https://api.bitbank.cc';
 
 
 /**
  * Class to handle bitbank api.
  */
-export class BitbankApiHandler {
+export class BitbankPrivateApiHandler {
   private http = new Http();
   private apiKey = '';
   private apiSecret = '';
 
   constructor(
-    options: BitbankApiHandlerOptions = {},
+    options: BitbankPrivateApiHandlerOptions = {},
   ) {
     this.apiKey = options.apiKey || '';
     this.apiSecret = options.apiSecret || '';
-  }
-
-  /**
-   * GET: /{pair}/ticker
-   */
-  getTicker(pair: string): Observable<BitbankApiTicker> {
-    return this.publicRequest(`${pair}/ticker`);
-  }
-
-  /**
-   * GET: /{pair}/depth
-   */
-  getDepth(pair: string): Observable<BitbankApiDepth> {
-    return this.publicRequest(`${pair}/depth`);
-  }
-
-  /**
-   * GET: /{pair}/transactions
-   */
-  getTransactions(pair: string, yyyymmdd?: string): Observable<BitbankApiTransactions> {
-    const url = yyyymmdd ? `${pair}/transactions/${yyyymmdd}` : `${pair}/transactions`;
-    return this.publicRequest(url);
-  }
-
-  /**
-   * GET: /{pair}/candlestick
-   */
-  getCandlestick(pair: string, type: BitbankApiCandlestickType, yyyymmdd: string): Observable<BitbankApiCandlestick> {
-    return this.publicRequest(`${pair}/candlestick/${type}/${yyyymmdd}`);
-  }
-
-  /**
-   * GET: /v1/user/assets
-   */
-  getAssets(): Observable<BitbankApiAssets> {
-    return this.privateGetRequest<BitbankApiAssets>('/v1/user/assets');
   }
 
   /**
@@ -88,7 +45,7 @@ export class BitbankApiHandler {
   /**
    * POST: /v1/user/spot/cancel_orders
    */
-  cancelOrders(pair: string, order_ids: string[]): Observable<BitbankApiMultiOrdersResult> {
+  cancelOrders(pair: string, order_ids: string[]|number[]): Observable<BitbankApiMultiOrdersResult> {
     return this.privatePostRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/cancel_orders', { pair, order_ids });
   }
 
@@ -127,14 +84,6 @@ export class BitbankApiHandler {
    */
   createWithdrawalRequest(options: BitbankApiCreateWithdrawalRequestOptions): Observable<BitbankApiWithdrawalRequestResult> {
     return this.privatePostRequest<BitbankApiWithdrawalRequestResult>('/v1/user/request_withdrawal', options);
-  }
-
-  /**
-   * For get request to public api.
-   */
-  private publicRequest<T>(path: string): Observable<T> {
-    const url = publicApiBaseUrl + path;
-    return this.http.get<T>(url);
   }
 
   /**
@@ -224,7 +173,7 @@ function getJSONorEmptyString(data?: any): string {
 /**
  * apiKey and apiSecret are required if user uses private-api.
  */
-export interface BitbankApiHandlerOptions {
+export interface BitbankPrivateApiHandlerOptions {
   apiKey?: string;
   apiSecret?: string;
 }

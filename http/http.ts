@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { map, tap } from 'rxjs/operators';
-import { BitbankApiErrorData, BitbankApiResponse } from '../api-handler/api-response.type';
+import { BitbankApiErrorData, BitbankApiResponse } from '../api-response.type';
 
 
 /**
