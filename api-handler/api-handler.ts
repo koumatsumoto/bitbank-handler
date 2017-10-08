@@ -82,6 +82,13 @@ export class BitbankApiHandler {
   }
 
   /**
+   * GET: /user/spot/active_orders
+   */
+  getActiveOrders(pair: string, options: BitbankApiActiveOrdersOptions = {}): Observable<BitbankApiOrder[]> {
+    return this.privateGetRequest<BitbankApiOrder[]>('/v1/user/spot/active_orders', { pair, ...options });
+  }
+
+  /**
    * For get request to public api.
    */
   private publicRequest<T>(path: string): Observable<T> {
@@ -149,24 +156,6 @@ export class BitbankApiHandler {
   }
 }
 
-/**
- * apiKey and apiSecret are required if user uses private-api.
- */
-interface BitbankApiHandlerOptions {
-  apiKey?: string;
-  apiSecret?: string;
-}
-
-/**
- * Used to create order.
- */
-export interface BitbankApiOrderOptions {
-  pair: string;
-  amount: number;
-  price: number;
-  side: 'buy' | 'sell';
-  type: 'limit' | 'market';
-}
 
 /**
  * JSON.stringify wrapped with try-catch.
@@ -189,4 +178,34 @@ function getJSONorEmptyString(data?: any): string {
   }
 
   return result;
+}
+
+/**
+ * apiKey and apiSecret are required if user uses private-api.
+ */
+interface BitbankApiHandlerOptions {
+  apiKey?: string;
+  apiSecret?: string;
+}
+
+/**
+ * @see: https://docs.bitbank.cc/#!/Order/order
+ */
+export interface BitbankApiOrderOptions {
+  pair: string;
+  amount: number;
+  price: number;
+  side: 'buy' | 'sell';
+  type: 'limit' | 'market';
+}
+
+/**
+ * @see: https://docs.bitbank.cc/#!/Order/active_orders
+ */
+interface BitbankApiActiveOrdersOptions {
+  count?: number;
+  from_id?: number;
+  end_id?: number;
+  since?: number;
+  end?: number;
 }
