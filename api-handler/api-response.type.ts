@@ -162,6 +162,10 @@ export interface BitbankApiOrder {
   status: BitbankOrderStatus;
 }
 
+export interface BitbankApiMultiOrdersResult {
+  orders: BitbankApiOrder[];
+}
+
 /**
  * UNFILLED - 注文中
  * PARTIALLY_FILLED - 注文中(一部約定)

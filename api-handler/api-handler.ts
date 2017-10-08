@@ -3,12 +3,14 @@ import { createHmac } from 'crypto';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '../http/http';
 import {
+  BitbankApiAssets,
   BitbankApiOrder,
   BitbankApiCandlestick,
   BitbankApiCandlestickType,
   BitbankApiDepth,
+  BitbankApiMultiOrdersResult,
   BitbankApiTicker,
-  BitbankApiTransactions, BitbankApiAssets,
+  BitbankApiTransactions,
 } from './api-response.type';
 
 
@@ -75,6 +77,20 @@ export class BitbankApiHandler {
   }
 
   /**
+   * POST: /user/spot/cancel_order
+   */
+  cancelOrder(pair: string, order_id: string): Observable<BitbankApiOrder> {
+    return this.privatePostRequest<BitbankApiOrder>('/v1/user/spot/cancel_order', { pair, order_id });
+  }
+
+  /**
+   * POST: /user/spot/cancel_orders
+   */
+  cancelOrders(pair: string, order_ids: string[]): Observable<BitbankApiMultiOrdersResult> {
+    return this.privatePostRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/cancel_orders', { pair, order_ids });
+  }
+
+  /**
    * GET: /user/spot/order
    */
   getOrder(pair: string, order_id: string): Observable<BitbankApiOrder> {
@@ -82,10 +98,17 @@ export class BitbankApiHandler {
   }
 
   /**
+   * POST: /user/spot/orders_info
+   */
+  getOrders(pair: string, order_ids: string[]): Observable<BitbankApiMultiOrdersResult> {
+    return this.privatePostRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/orders_info', { pair, order_ids });
+  }
+
+  /**
    * GET: /user/spot/active_orders
    */
-  getActiveOrders(pair: string, options: BitbankApiActiveOrdersOptions = {}): Observable<BitbankApiOrder[]> {
-    return this.privateGetRequest<BitbankApiOrder[]>('/v1/user/spot/active_orders', { pair, ...options });
+  getActiveOrders(pair: string, options: BitbankApiActiveOrdersOptions = {}): Observable<BitbankApiMultiOrdersResult> {
+    return this.privateGetRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/active_orders', { pair, ...options });
   }
 
   /**
@@ -132,7 +155,7 @@ export class BitbankApiHandler {
    * @param {string} queryString
    * @returns {object}
    */
-  private getOptionsToPrivateRequest(queryString: string) {
+  private getOptionsToPrivateRequest(queryString: string): {[k: string]: any} {
     const nonce = new Date().getTime();
     const message = nonce + queryString;
     const headers = {
