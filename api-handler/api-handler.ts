@@ -11,6 +11,7 @@ import {
   BitbankApiMultiOrdersResult,
   BitbankApiTicker,
   BitbankApiTransactions,
+  BitbankApiWithdrawalResult,
 } from './api-response.type';
 
 
@@ -63,52 +64,59 @@ export class BitbankApiHandler {
   }
 
   /**
-   * GET: /user/assets
+   * GET: /v1/user/assets
    */
   getAssets(): Observable<BitbankApiAssets> {
     return this.privateGetRequest<BitbankApiAssets>('/v1/user/assets');
   }
 
   /**
-   * POST: /user/spot/order
+   * POST: /v1/user/spot/order
    */
   createOrder(options: BitbankApiOrderOptions): Observable<BitbankApiOrder> {
     return this.privatePostRequest<BitbankApiOrder>('/v1/user/spot/order', options);
   }
 
   /**
-   * POST: /user/spot/cancel_order
+   * POST: /v1/user/spot/cancel_order
    */
   cancelOrder(pair: string, order_id: string): Observable<BitbankApiOrder> {
     return this.privatePostRequest<BitbankApiOrder>('/v1/user/spot/cancel_order', { pair, order_id });
   }
 
   /**
-   * POST: /user/spot/cancel_orders
+   * POST: /v1/user/spot/cancel_orders
    */
   cancelOrders(pair: string, order_ids: string[]): Observable<BitbankApiMultiOrdersResult> {
     return this.privatePostRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/cancel_orders', { pair, order_ids });
   }
 
   /**
-   * GET: /user/spot/order
+   * GET: /v1/user/spot/order
    */
   getOrder(pair: string, order_id: string): Observable<BitbankApiOrder> {
     return this.privateGetRequest<BitbankApiOrder>('/v1/user/spot/order', { pair, order_id });
   }
 
   /**
-   * POST: /user/spot/orders_info
+   * POST: /v1/user/spot/orders_info
    */
   getOrders(pair: string, order_ids: string[]): Observable<BitbankApiMultiOrdersResult> {
     return this.privatePostRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/orders_info', { pair, order_ids });
   }
 
   /**
-   * GET: /user/spot/active_orders
+   * GET: /v1/user/spot/active_orders
    */
   getActiveOrders(pair: string, options: BitbankApiActiveOrdersOptions = {}): Observable<BitbankApiMultiOrdersResult> {
     return this.privateGetRequest<BitbankApiMultiOrdersResult>('/v1/user/spot/active_orders', { pair, ...options });
+  }
+
+  /**
+   * GET: /v1/user/withdrawal_account
+   */
+  getWithdrawAccount(asset: string): Observable<BitbankApiWithdrawalResult> {
+    return this.privateGetRequest<BitbankApiWithdrawalResult>('/v1/user/withdrawal_account', { asset });
   }
 
   /**

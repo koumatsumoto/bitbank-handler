@@ -174,3 +174,18 @@ export interface BitbankApiMultiOrdersResult {
  * CANCELED_PARTIALLY_FILLED - 取消済(一部約定)
  */
 type BitbankOrderStatus = 'UNFILLED' | 'PARTIALLY_FILLED' | 'FULLY_FILLED' | 'CANCELED_UNFILLED' | 'CANCELED_PARTIALLY_FILLED';
+
+/**
+ * GET: /v1/user/withdrawal_account
+ *
+ * @see: https://docs.bitbank.cc/#!/Withdraw/withdrawal_account
+ */
+export interface BitbankApiWithdrawalResult {
+  accounts: BitbankApiWithdrawalData[];
+}
+
+export interface BitbankApiWithdrawalData {
+  uuid: string;
+  label: string;
+  address: string;
+}
