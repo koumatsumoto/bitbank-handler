@@ -57,7 +57,7 @@ export interface BitbankApiDepth {
 /**
  * Each depth data.
  */
-type BitbankApiDepthData = [ string, string ];
+export type BitbankApiDepthData = [ string, string ];
 
 /**
  * GET: /{pair}/transactions
@@ -78,7 +78,7 @@ export interface BitbankApiTransactions {
  * amount         - 数量
  * executed_at    - 約定日時（UnixTimeのミリ秒）
  */
-interface BitbankApiTransactionData {
+export interface BitbankApiTransactionData {
   transaction_id: number;
   side: 'buy' | 'sell';
   price: string;
@@ -102,7 +102,7 @@ export interface BitbankApiCandlestick {
  * type  - キャンドルスティックの種類
  * ohlcv - [始値, 高値, 安値, 終値, 出来高, UnixTime]
  */
-interface BitbankApiCandlestickData {
+export interface BitbankApiCandlestickData {
   type: BitbankApiCandlestickType;
   ohlcv: [string, string, string, string, string, number][];
 }
@@ -126,7 +126,7 @@ export interface BitbankApiAssets {
  * free_amount - 利用可能な量
  * withdrawal_fee - 引き出し手数料
  */
-interface BitbankApiAsset {
+export interface BitbankApiAsset {
   asset: string;
   amount_precision: number;
   onhand_amount: string;
@@ -173,7 +173,7 @@ export interface BitbankApiMultiOrdersResult {
  * CANCELED_UNFILLED - 取消済
  * CANCELED_PARTIALLY_FILLED - 取消済(一部約定)
  */
-type BitbankOrderStatus = 'UNFILLED' | 'PARTIALLY_FILLED' | 'FULLY_FILLED' | 'CANCELED_UNFILLED' | 'CANCELED_PARTIALLY_FILLED';
+export type BitbankOrderStatus = 'UNFILLED' | 'PARTIALLY_FILLED' | 'FULLY_FILLED' | 'CANCELED_UNFILLED' | 'CANCELED_PARTIALLY_FILLED';
 
 /**
  * GET: /v1/user/withdrawal_account

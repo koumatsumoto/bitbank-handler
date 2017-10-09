@@ -62,6 +62,7 @@ typings/
 
 # Transpiled js files
 src/**/*.js
+src/**/*.d.ts
 
 # Ansible ignore files
 ansible/*.retry
