@@ -10,6 +10,9 @@ import {
 } from './private-api-handler/private-api-handler';
 
 
+/**
+ * Facade class for three bitbank api handlers.
+ */
 export class Bitbank {
   private publicApi: BitbankPublicApiHandler;
   private privateApi: BitbankPrivateApiHandler;

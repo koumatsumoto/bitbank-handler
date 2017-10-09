@@ -4,7 +4,11 @@ import { BitbankApiCandlestick, BitbankApiDepth, BitbankApiTicker, BitbankApiTra
 import { PubNub, PubNubMessageData } from './pubnub.type';
 const PubNub = require('pubnub');
 
-// @see: https://docs.bitbank.cc/
+/**
+ * PubNub subscribe key of bitbank.cc.
+ *
+ * @see https://docs.bitbank.cc/
+ */
 const bitbankPubNubSubscribeKey = 'sub-c-e12e9174-dd60-11e6-806b-02ee2ddab7fe';
 
 

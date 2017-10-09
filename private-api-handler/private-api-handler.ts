@@ -10,11 +10,18 @@ import {
 } from '../api-response.type';
 
 
+/**
+ * base url of bitbank.cc private api.
+ *
+ * @see https://docs.bitbank.cc/
+ */
 const privateApiBaseUrl = 'https://api.bitbank.cc';
 
-
 /**
- * Class to handle bitbank api.
+ * Class to handle bitbank private api.
+ *
+ * this requires api-key and api-secret on instantiated.
+ * if lacks it, error can be thrown with calling methods.
  */
 export class BitbankPrivateApiHandler {
   private apiKey = '';

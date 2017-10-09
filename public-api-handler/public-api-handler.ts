@@ -9,11 +9,16 @@ import {
 } from '../api-response.type';
 
 
+/**
+ * base url of bitbank.cc public api.
+ *
+ * @see https://docs.bitbank.cc/
+ */
 const publicApiBaseUrl = 'https://public.bitbank.cc';
 
 
 /**
- * Class to handle bitbank api.
+ * Class to handle bitbank public api.
  */
 export class BitbankPublicApiHandler {
   /**
